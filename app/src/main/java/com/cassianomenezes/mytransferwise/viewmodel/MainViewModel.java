@@ -11,7 +11,7 @@ import com.cassianomenezes.mytransferwise.BR;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.entries.FootballResponse;
-import com.cassianomenezes.mytransferwise.entries.Players;
+import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ import retrofit2.Response;
 
 public class MainViewModel extends BaseObservable {
 
-    private ObservableField<List<Players>> itemsList = new ObservableField<>(new ArrayList<>());
+    private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
     private ItemsListAdapter adapter;
@@ -41,11 +41,11 @@ public class MainViewModel extends BaseObservable {
     // --- region GETTERS & SETTERS ---
 
 
-    public ObservableField<List<Players>> getItemsList() {
+    public ObservableField<List<Player>> getItemsList() {
         return itemsList;
     }
 
-    public void setItemsList(List<Players> itemsList) {
+    public void setItemsList(List<Player> itemsList) {
         this.itemsList.set(itemsList);
         adapter.setList(itemsList);
     }
@@ -113,7 +113,7 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void handleSuccess(FootballResponse body) {
-        setItemsList(body.getPlayersList());
+        setItemsList(body.getPlayerList());
     }
 
     // end region

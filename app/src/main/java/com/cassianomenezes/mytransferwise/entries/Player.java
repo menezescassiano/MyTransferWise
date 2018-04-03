@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Players extends BaseObservable implements Parcelable{
+public class Player extends BaseObservable implements Parcelable{
 
     @SerializedName("name")
     private String name;
@@ -15,7 +15,7 @@ public class Players extends BaseObservable implements Parcelable{
     private String position;
 
     @SerializedName("jerseyNumber")
-    private int number;
+    private int jerseyNumber;
 
     @SerializedName("dateOfBirth")
     private String dateOfBirth;
@@ -26,24 +26,24 @@ public class Players extends BaseObservable implements Parcelable{
     @SerializedName("contractUntil")
     private String contractUntil;
 
-    protected Players(Parcel in) {
+    protected Player(Parcel in) {
         name = in.readString();
         position = in.readString();
-        number = in.readInt();
+        jerseyNumber = in.readInt();
         dateOfBirth = in.readString();
         nationality = in.readString();
         contractUntil = in.readString();
     }
 
-    public static final Creator<Players> CREATOR = new Creator<Players>() {
+    public static final Creator<Player> CREATOR = new Creator<Player>() {
         @Override
-        public Players createFromParcel(Parcel in) {
-            return new Players(in);
+        public Player createFromParcel(Parcel in) {
+            return new Player(in);
         }
 
         @Override
-        public Players[] newArray(int size) {
-            return new Players[size];
+        public Player[] newArray(int size) {
+            return new Player[size];
         }
     };
 
@@ -56,7 +56,7 @@ public class Players extends BaseObservable implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(position);
-        dest.writeInt(number);
+        dest.writeInt(jerseyNumber);
         dest.writeString(dateOfBirth);
         dest.writeString(nationality);
         dest.writeString(contractUntil);
@@ -78,12 +78,12 @@ public class Players extends BaseObservable implements Parcelable{
         this.position = position;
     }
 
-    public int getNumber() {
-        return number;
+    public int getJerseyNumber() {
+        return jerseyNumber;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setJerseyNumber(int jerseyNumber) {
+        this.jerseyNumber = jerseyNumber;
     }
 
     public String getDateOfBirth() {

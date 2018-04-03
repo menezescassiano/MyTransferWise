@@ -10,10 +10,10 @@ import java.util.List;
 public class FootballResponse implements Parcelable{
 
     @SerializedName("players")
-    private List<Players> playersList;
+    private List<Player> playerList;
 
     protected FootballResponse(Parcel in) {
-        playersList = in.createTypedArrayList(Players.CREATOR);
+        playerList = in.createTypedArrayList(Player.CREATOR);
     }
 
     public static final Creator<FootballResponse> CREATOR = new Creator<FootballResponse>() {
@@ -28,12 +28,12 @@ public class FootballResponse implements Parcelable{
         }
     };
 
-    public List<Players> getPlayersList() {
-        return playersList;
+    public List<Player> getPlayerList() {
+        return playerList;
     }
 
-    public void setPlayersList(List<Players> playersList) {
-        this.playersList = playersList;
+    public void setPlayerList(List<Player> playerList) {
+        this.playerList = playerList;
     }
 
     @Override
@@ -43,6 +43,6 @@ public class FootballResponse implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeTypedList(playersList);
+        dest.writeTypedList(playerList);
     }
 }
