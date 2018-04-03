@@ -14,6 +14,7 @@ import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.activity.PlayerActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
+import com.cassianomenezes.mytransferwise.database.SQLiteDatabaseHandler;
 import com.cassianomenezes.mytransferwise.entries.FootballResponse;
 import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
@@ -37,12 +38,15 @@ public class MainViewModel extends BaseObservable {
 
     private Context context;
     private RecyclerConfiguration recyclerConfiguration;
+    private SQLiteDatabaseHandler db;
 
     public MainViewModel(Context context) {
         this.context = context;
         setAdapter(new ItemsListAdapter(context, this, new ArrayList<>()));
         setupItemsList(new RecyclerConfiguration());
+        db = new SQLiteDatabaseHandler(context);
         getPlayers();
+
     }
 
     // --- region GETTERS & SETTERS ---
@@ -143,10 +147,15 @@ public class MainViewModel extends BaseObservable {
     // end region
 
     public void gotoPlayerActivity(int position) {
+        Player player = itemsList.get().get(position);
         Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, itemsList.get().get(position));
-
+        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, player);
         context.startActivity(intent);
+        if (db.getPlayer(player.getName()) == null) {
+            db.addPlayer(player);
+        }
+
+        db.allPlayers();
     }
 
     private void showAlertDialog() {

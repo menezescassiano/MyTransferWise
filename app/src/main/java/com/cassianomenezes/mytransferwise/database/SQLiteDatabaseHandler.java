@@ -8,16 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cassianomenezes.mytransferwise.entries.Player;
 
-public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
-    /*
-    "name": "Manuel Neuer",
-            "position": "Keeper",
-            "jerseyNumber": 1,
-            "dateOfBirth": "1986-03-27",
-            "nationality": "Germany",
-            "contractUntil": "2021-06-30",
-     */
+public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "players_db";
@@ -66,18 +61,18 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
                 null, // g. order by
                 null); // h. limit
 
-        if (cursor != null)
+        Player player = null;
+
+        if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
-
-        Player player = new Player();
-        //player.setId(Integer.parseInt(cursor.getString(0)));
-        player.setName(cursor.getString(1));
-        player.setPosition(cursor.getString(2));
-        player.setJerseyNumber(Integer.parseInt(cursor.getString(3)));
-        player.setDateOfBirth(cursor.getString(4));
-        player.setNationality(cursor.getString(5));
-        player.setContractUntil(cursor.getString(6));
-
+            player = new Player();
+            player.setName(cursor.getString(1));
+            player.setPosition(cursor.getString(2));
+            player.setJerseyNumber(Integer.parseInt(cursor.getString(3)));
+            player.setDateOfBirth(cursor.getString(4));
+            player.setNationality(cursor.getString(5));
+            player.setContractUntil(cursor.getString(6));
+        }
 
         return player;
     }
@@ -114,5 +109,25 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return i;
+    }
+
+    public List<Player> allPlayers() {
+
+        List<Player> players = new ArrayList<>();
+        String query = "SELECT  * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Player player = null;
+
+        if (cursor.moveToFirst()) {
+            do {
+                player = new Player();
+                player.setName(cursor.getString(1));
+                player.setPosition(cursor.getString(2));
+                players.add(player);
+            } while (cursor.moveToNext());
+        }
+
+        return players;
     }
 }
