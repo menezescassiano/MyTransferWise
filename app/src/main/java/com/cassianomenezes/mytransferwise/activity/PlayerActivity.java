@@ -3,6 +3,7 @@ package com.cassianomenezes.mytransferwise.activity;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.databinding.ActivityPlayerBinding;
@@ -22,6 +23,7 @@ public class PlayerActivity extends AppCompatActivity {
         handleBundle();
         setupViewModel();
         setupBinding();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 
@@ -48,5 +50,13 @@ public class PlayerActivity extends AppCompatActivity {
 
     public void setBinding(ActivityPlayerBinding binding) {
         this.binding = binding;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

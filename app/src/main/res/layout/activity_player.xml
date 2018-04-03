@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.name}"
             app:font="@{R.font.sans_bold}"
             tools:text="Manuel Neuer"/>
@@ -33,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.position}"
             app:font="@{R.font.sans_bold}"
             tools:text="Keeper"/>
@@ -40,6 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.jerseyNumber}"
             app:font="@{R.font.sans_bold}"
             tools:text="1"/>
@@ -47,6 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.dateOfBirth}"
             app:font="@{R.font.sans_bold}"
             tools:text="1986-03-27"/>
@@ -54,12 +58,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.nationality}"
             app:font="@{R.font.sans_bold}"
             tools:text="Germany"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/sans_regular"
             app:text="@{viewModel.contractUntil}"
             app:font="@{R.font.sans_bold}"
             tools:text="2021-06-30"/>
