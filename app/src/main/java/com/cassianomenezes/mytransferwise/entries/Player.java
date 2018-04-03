@@ -26,6 +26,10 @@ public class Player extends BaseObservable implements Parcelable{
     @SerializedName("contractUntil")
     private String contractUntil;
 
+    public Player(){
+
+    }
+
     protected Player(Parcel in) {
         name = in.readString();
         position = in.readString();

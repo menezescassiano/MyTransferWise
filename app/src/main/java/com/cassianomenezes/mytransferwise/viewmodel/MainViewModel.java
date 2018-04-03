@@ -6,9 +6,11 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.cassianomenezes.mytransferwise.BR;
+import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.activity.PlayerActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
@@ -16,6 +18,7 @@ import com.cassianomenezes.mytransferwise.entries.FootballResponse;
 import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
 import com.cassianomenezes.mytransferwise.util.Constants;
+import com.cassianomenezes.mytransferwise.util.RequestUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ public class MainViewModel extends BaseObservable {
     private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
+    private ObservableBoolean noDataAvailable = new ObservableBoolean(false);
     private ItemsListAdapter adapter;
 
     private Context context;
@@ -91,28 +95,45 @@ public class MainViewModel extends BaseObservable {
         this.running.set(running);
     }
 
+    public ObservableBoolean getNoDataAvailable() {
+        return noDataAvailable;
+    }
+
+    public void setNoDataAvailable(boolean noDataAvailable) {
+        this.noDataAvailable.set(noDataAvailable);
+    }
+
     // end region
 
     // region --- API CALLS ---
 
 
     private void getPlayers() {
-        Call<FootballResponse> call = new RetrofitClient().getModel().getInfo();
-        setRunning(true);
-        call.enqueue(new Callback<FootballResponse>() {
-            @Override
-            public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
-                FootballResponse footballResponse = response.body();
-                handleSuccess(response.body());
-                setRunning(false);
-            }
+        if (RequestUtil.hasInternetConnection(context)) {
+            Call<FootballResponse> call = new RetrofitClient().getModel().getInfo();
+            setRunning(true);
+            call.enqueue(new Callback<FootballResponse>() {
+                @Override
+                public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
+                    FootballResponse footballResponse = response.body();
+                    handleSuccess(response.body());
+                    setRunning(false);
+                    setNoDataAvailable(false);
+                }
 
-            @Override
-            public void onFailure(Call<FootballResponse> call, Throwable t) {
-                System.out.print("aeaeae");
-                setRunning(false);
+                @Override
+                public void onFailure(Call<FootballResponse> call, Throwable t) {
+                    System.out.print("aeaeae");
+                    setRunning(false);
+                }
+            });
+        } else {
+            showAlertDialog();
+            if (itemsList.get().isEmpty()) {
+                setNoDataAvailable(true);
             }
-        });
+        }
+
     }
 
     private void handleSuccess(FootballResponse body) {
@@ -126,5 +147,15 @@ public class MainViewModel extends BaseObservable {
         intent.putExtra(Constants.BUNDLE_PLAYER_INFO, itemsList.get().get(position));
 
         context.startActivity(intent);
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(context);
+        builder.setTitle(context.getString(R.string.warning_no_internet_connection_title))
+                .setMessage(context.getString(R.string.warning_no_internet_connection_message))
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getPlayers())
+                .show();
     }
 }

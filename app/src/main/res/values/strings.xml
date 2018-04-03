@@ -7,4 +7,9 @@
     <string name="player_date_of_birth">#Date of Birth:# %s</string>
     <string name="player_nationality">#Nationality:# %s</string>
     <string name="player_contract_date">#Contract date:# %s</string>
+
+    <string name="warning_no_internet_connection_title">No internet connection</string>
+    <string name="warning_no_internet_connection_message">It was not possible to connect to the Internet.\nPlease check your connection.</string>
+    <string name="try_again">Try again</string>
+    <string name="warning_no_data_available">No data available</string>
 </resources>
