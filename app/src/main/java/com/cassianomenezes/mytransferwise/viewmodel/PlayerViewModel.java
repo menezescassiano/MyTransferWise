@@ -1,15 +1,17 @@
 package com.cassianomenezes.mytransferwise.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.ObservableField;
 
+import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.entries.Player;
 
 public class PlayerViewModel {
 
     private ObservableField<String> name = new ObservableField<>();
     private ObservableField<String> position = new ObservableField<>();
-    private ObservableField<Integer> jerseyNumber = new ObservableField<>();
+    private ObservableField<String> jerseyNumber = new ObservableField<>();
     private ObservableField<String> dateOfBirth = new ObservableField<>();
     private ObservableField<String> nationality = new ObservableField<>();
     private ObservableField<String> contractUntil = new ObservableField<>();
@@ -39,11 +41,11 @@ public class PlayerViewModel {
         this.position.set(position);
     }
 
-    public ObservableField<Integer> getJerseyNumber() {
+    public ObservableField<String> getJerseyNumber() {
         return jerseyNumber;
     }
 
-    public void setJerseyNumber(int jerseyNumber) {
+    public void setJerseyNumber(String jerseyNumber) {
         this.jerseyNumber.set(jerseyNumber);
     }
 
@@ -71,11 +73,13 @@ public class PlayerViewModel {
         this.contractUntil.set(contractUntil);
     }
 
+    @SuppressLint("StringFormatMatches")
     private void handlePlayerData() {
-        setName(player.getName());
-        setPosition(player.getPosition());
-        setJerseyNumber(player.getJerseyNumber());
-        setDateOfBirth(player.getDateOfBirth());
-        setContractUntil(player.getContractUntil());
+        setName(String.format(context.getString(R.string.player_name), player.getName()));
+        setPosition(String.format(context.getString(R.string.player_position), player.getPosition()));
+        setJerseyNumber(String.format(context.getString(R.string.player_jersey_number), player.getJerseyNumber()));
+        setDateOfBirth(String.format(context.getString(R.string.player_date_of_birth), player.getDateOfBirth()));
+        setNationality(String.format(context.getString(R.string.player_nationality), player.getNationality()));
+        setContractUntil(String.format(context.getString(R.string.player_contract_date), player.getContractUntil()));
     }
 }

@@ -25,37 +25,43 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.name}"
             android:layout_marginBottom="10dp"
+            app:text="@{viewModel.name}"
+            app:font="@{R.font.sans_bold}"
             tools:text="Manuel Neuer"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.position}"
             android:layout_marginBottom="10dp"
+            app:text="@{viewModel.position}"
+            app:font="@{R.font.sans_bold}"
             tools:text="Keeper"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.jerseyNumber}"
             android:layout_marginBottom="10dp"
-            tools:text="Manuel Neuer"/>
+            app:text="@{viewModel.jerseyNumber}"
+            app:font="@{R.font.sans_bold}"
+            tools:text="1"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.dateOfBirth}"
             android:layout_marginBottom="10dp"
+            app:text="@{viewModel.dateOfBirth}"
+            app:font="@{R.font.sans_bold}"
             tools:text="1986-03-27"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.nationality}"
             android:layout_marginBottom="10dp"
+            app:text="@{viewModel.nationality}"
+            app:font="@{R.font.sans_bold}"
             tools:text="Germany"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.contractUntil}"
+            app:text="@{viewModel.contractUntil}"
+            app:font="@{R.font.sans_bold}"
             tools:text="2021-06-30"/>
 
     </LinearLayout>

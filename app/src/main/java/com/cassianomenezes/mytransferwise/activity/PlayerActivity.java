@@ -7,6 +7,7 @@ import android.os.Bundle;
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.databinding.ActivityPlayerBinding;
 import com.cassianomenezes.mytransferwise.entries.Player;
+import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.viewmodel.PlayerViewModel;
 
 public class PlayerActivity extends AppCompatActivity {
@@ -18,11 +19,19 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handleBundle();
         setupViewModel();
         setupBinding();
     }
 
 
+    private void handleBundle() {
+        if (getIntent().getExtras() != null && getIntent().getExtras().size() > 0) {
+            player = getIntent().getExtras().getParcelable(Constants.BUNDLE_PLAYER_INFO);
+        } else {
+            finish();
+        }
+    }
 
     private void setupViewModel() {
         viewModel = new PlayerViewModel(this, player);

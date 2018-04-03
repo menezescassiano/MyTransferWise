@@ -1,6 +1,7 @@
 package com.cassianomenezes.mytransferwise.viewmodel;
 
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
@@ -8,11 +9,13 @@ import android.databinding.ObservableField;
 import android.support.v7.widget.LinearLayoutManager;
 
 import com.cassianomenezes.mytransferwise.BR;
+import com.cassianomenezes.mytransferwise.activity.PlayerActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.entries.FootballResponse;
 import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
+import com.cassianomenezes.mytransferwise.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,4 +120,11 @@ public class MainViewModel extends BaseObservable {
     }
 
     // end region
+
+    public void gotoPlayerActivity(int position) {
+        Intent intent = new Intent(context, PlayerActivity.class);
+        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, itemsList.get().get(position));
+
+        context.startActivity(intent);
+    }
 }

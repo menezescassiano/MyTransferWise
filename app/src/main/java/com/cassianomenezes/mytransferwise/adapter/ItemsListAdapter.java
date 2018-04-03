@@ -40,7 +40,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemsListHolder holder, int position) {
         holder.getBinding().hItemListTvTitle.setText(itemsList.get(position).getName());
-        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> Toast.makeText(context, "Clicked! " + position, Toast.LENGTH_SHORT).show());
+        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> viewModel.gotoPlayerActivity(position));
 
     }
 

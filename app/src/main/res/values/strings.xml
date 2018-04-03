@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">My TransferWise</string>
+    <string name="player_name">#Name:# %s</string>
+    <string name="player_position">#Position:# %s</string>
+    <string name="player_jersey_number">#Number:# %s</string>
+    <string name="player_date_of_birth">#Date of Birth:# %s</string>
+    <string name="player_nationality">#Nationality:# %s</string>
+    <string name="player_contract_date">#Contract date:# %s</string>
 </resources>
