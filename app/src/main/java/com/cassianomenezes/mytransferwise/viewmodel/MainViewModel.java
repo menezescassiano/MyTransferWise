@@ -160,7 +160,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     private void getPlayers() {
         if (RequestUtil.hasInternetConnection(context)) {
             setIsOffline(false);
-            Call<FootballResponse> call = new RetrofitClient().getModel().getPlayersInfo();
+            Call<FootballResponse> call = RetrofitClient.getInstance().getModel().getPlayersInfo();
             setRunning(true);
             call.enqueue(new Callback<FootballResponse>() {
                 @Override

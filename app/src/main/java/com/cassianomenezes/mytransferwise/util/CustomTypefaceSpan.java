@@ -33,9 +33,7 @@ public class CustomTypefaceSpan extends MetricAffectingSpan {
     private void apply(Paint paint) {
         Typeface oldTypeface = paint.getTypeface();
 
-        int oldStyle = oldTypeface != null
-                ? oldTypeface.getStyle()
-                : 0;
+        int oldStyle = oldTypeface != null ? oldTypeface.getStyle() : 0;
 
         int fakeStyle = oldStyle & ~getTypeface().getStyle();
 

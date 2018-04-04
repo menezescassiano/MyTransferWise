@@ -12,8 +12,4 @@ public class RequestUtil {
 
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
-
-    public static boolean isTimeoutError(String networkError) {
-        return networkError.contains("GATEWAY_TIMEOUT") || networkError.contains("connect timed out");
-    }
 }
