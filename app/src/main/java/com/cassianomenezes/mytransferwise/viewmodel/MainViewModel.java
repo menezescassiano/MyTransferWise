@@ -6,6 +6,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 
@@ -14,6 +15,7 @@ import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.activity.PlayerActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
+import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 import com.cassianomenezes.mytransferwise.database.SQLiteDatabaseHandler;
 import com.cassianomenezes.mytransferwise.entries.FootballResponse;
 import com.cassianomenezes.mytransferwise.entries.Player;
@@ -28,16 +30,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainViewModel extends BaseObservable {
+public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.OnRefreshListener{
 
     private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
     private ObservableBoolean noDataAvailable = new ObservableBoolean(false);
+    private ObservableBoolean isSwipeToRefreshRunning = new ObservableBoolean(false);
     private ItemsListAdapter adapter;
 
     private Context context;
     private RecyclerConfiguration recyclerConfiguration;
+    private SwipeRefreshConfiguration swipeRefreshConfiguration;
     private SQLiteDatabaseHandler db;
 
     public MainViewModel(Context context) {
@@ -46,6 +50,9 @@ public class MainViewModel extends BaseObservable {
         setupItemsList(new RecyclerConfiguration());
         db = new SQLiteDatabaseHandler(context);
         getPlayers();
+
+        swipeRefreshConfiguration = new SwipeRefreshConfiguration();
+        swipeRefreshConfiguration.setOnRefreshListener(this);
 
     }
 
@@ -107,6 +114,24 @@ public class MainViewModel extends BaseObservable {
         this.noDataAvailable.set(noDataAvailable);
     }
 
+    @Bindable
+    public SwipeRefreshConfiguration getSwipeRefreshConfiguration() {
+        return swipeRefreshConfiguration;
+    }
+
+    public void setSwipeRefreshEnable(boolean enable) {
+        swipeRefreshConfiguration.setEnable(enable);
+        notifyPropertyChanged(BR.swipeRefreshConfiguration);
+    }
+
+    public ObservableBoolean getIsSwipeToRefreshRunning() {
+        return isSwipeToRefreshRunning;
+    }
+
+    public void setIsSwipeToRefreshRunning(boolean isSwipeToRefreshRunning) {
+        this.isSwipeToRefreshRunning.set(isSwipeToRefreshRunning);
+    }
+
     // end region
 
     // region --- API CALLS ---
@@ -122,17 +147,21 @@ public class MainViewModel extends BaseObservable {
                     FootballResponse footballResponse = response.body();
                     handleSuccess(response.body());
                     setRunning(false);
+                    setSwipeRefreshEnable(!running.get());
                     setNoDataAvailable(false);
+                    setIsSwipeToRefreshRunning(running.get());
                 }
 
                 @Override
                 public void onFailure(Call<FootballResponse> call, Throwable t) {
                     System.out.print("aeaeae");
                     setRunning(false);
+                    setIsSwipeToRefreshRunning(running.get());
                 }
             });
         } else {
             showAlertDialog();
+            setRunning(false);
             if (itemsList.get().isEmpty()) {
                 setNoDataAvailable(true);
             }
@@ -166,5 +195,17 @@ public class MainViewModel extends BaseObservable {
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getPlayers())
                 .show();
+    }
+
+    @Override
+    public void onRefresh() {
+        if (RequestUtil.hasInternetConnection(context)) {
+            setIsSwipeToRefreshRunning(true);
+            getPlayers();
+        } else {
+            showAlertDialog();
+            setIsSwipeToRefreshRunning(false);
+            setRunning(false);
+        }
     }
 }

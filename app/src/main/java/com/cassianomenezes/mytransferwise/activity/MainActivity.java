@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         setupViewModel();
         setupBinding();
+        viewModel.setSwipeRefreshEnable(!viewModel.getRunning().get());
     }
 
     private void setupViewModel() {

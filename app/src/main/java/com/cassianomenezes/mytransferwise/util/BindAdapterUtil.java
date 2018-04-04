@@ -7,6 +7,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.FontRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -18,6 +19,7 @@ import android.text.style.RelativeSizeSpan;
 import android.widget.TextView;
 
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
+import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 
 public class BindAdapterUtil {
 
@@ -103,6 +105,19 @@ public class BindAdapterUtil {
         if (configuration.getOnScrollListener() != null) {
             recyclerView.addOnScrollListener(configuration.getOnScrollListener());
         }
+    }
+
+    @BindingAdapter("swipeRefreshing")
+    public static void swipeRefreshing(SwipeRefreshLayout swipeRefreshLayout, boolean isRunning) {
+        swipeRefreshLayout.setRefreshing(isRunning);
+    }
+
+    @BindingAdapter("swipeRefresh_configuration")
+    public static void configureSwipeRefresh(SwipeRefreshLayout swipeRefreshLayout, SwipeRefreshConfiguration swipeRefreshConfiguration) {
+        swipeRefreshLayout.setOnRefreshListener(swipeRefreshConfiguration.getOnRefreshListener());
+        swipeRefreshLayout.setColorSchemeColors(swipeRefreshConfiguration.getColorScheme());
+        swipeRefreshLayout.setEnabled(swipeRefreshConfiguration.isEnable());
+        swipeRefreshLayout.setSize(swipeRefreshConfiguration.getSize());
     }
 
 }
