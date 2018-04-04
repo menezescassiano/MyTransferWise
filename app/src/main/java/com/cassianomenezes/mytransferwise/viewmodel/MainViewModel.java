@@ -32,6 +32,8 @@ import retrofit2.Response;
 
 public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.OnRefreshListener{
 
+    private static final String TAG = MainViewModel.class.getCanonicalName();
+
     private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
@@ -156,17 +158,23 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     private void getPlayers() {
         if (RequestUtil.hasInternetConnection(context)) {
             setIsOffline(false);
-            Call<FootballResponse> call = new RetrofitClient().getModel().getInfo();
+            Call<FootballResponse> call = new RetrofitClient().getModel().getPlayersInfo();
             setRunning(true);
             call.enqueue(new Callback<FootballResponse>() {
                 @Override
                 public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
-                    handleSuccess(response.body());
+                    if(response.isSuccessful()) {
+                        handleSuccess(response.body());
+                    } else {
+                        showAlertDialog(context.getString(R.string.warning_data_fetch_error_title),
+                                context.getString(R.string.warning_data_fetch_error_message));
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<FootballResponse> call, Throwable t) {
-                    System.out.print("aeaeae");
+                    showAlertDialog(context.getString(R.string.warning_data_fetch_error_title),
+                            context.getString(R.string.warning_data_fetch_error_message));
                     setRunning(false);
                     setIsSwipeToRefreshRunning(running.get());
                 }
@@ -190,7 +198,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     }
 
     private void handleNoInternet() {
-        showAlertDialog();
+        showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
+                context.getString(R.string.warning_no_internet_connection_message));
         setRunning(false);
         setIsOffline(true);
 
@@ -219,11 +228,11 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         db.getAllPlayers();
     }
 
-    private void showAlertDialog() {
+    private void showAlertDialog(String title, String message) {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(context);
-        builder.setTitle(context.getString(R.string.warning_no_internet_connection_title))
-                .setMessage(context.getString(R.string.warning_no_internet_connection_message))
+        builder.setTitle(title)
+                .setMessage(message)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
                 .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getPlayers())
                 .show();
@@ -239,7 +248,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             setIsSwipeToRefreshRunning(true);
             getPlayers();
         } else {
-            showAlertDialog();
+            showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
+                    context.getString(R.string.warning_no_internet_connection_message));
             setIsSwipeToRefreshRunning(false);
             setRunning(false);
         }
