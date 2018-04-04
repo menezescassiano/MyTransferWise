@@ -37,8 +37,10 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     private ObservableField<String> title = new ObservableField<>("");
     private ObservableBoolean noDataAvailable = new ObservableBoolean(false);
     private ObservableBoolean isSwipeToRefreshRunning = new ObservableBoolean(false);
-    private ItemsListAdapter adapter;
+    private ObservableBoolean isDataSaved = new ObservableBoolean(false);
+    private ObservableBoolean isOffline = new ObservableBoolean(false);
 
+    private ItemsListAdapter adapter;
     private Context context;
     private RecyclerConfiguration recyclerConfiguration;
     private SwipeRefreshConfiguration swipeRefreshConfiguration;
@@ -132,20 +134,36 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         this.isSwipeToRefreshRunning.set(isSwipeToRefreshRunning);
     }
 
+    public ObservableBoolean getIsDataSaved() {
+        return isDataSaved;
+    }
+
+    public void setIsDataSaved(boolean isDataSaved) {
+        this.isDataSaved.set(isDataSaved);
+    }
+
+    public ObservableBoolean getIsOffline() {
+        return isOffline;
+    }
+
+    public void setIsOffline(boolean isOffline) {
+        this.isOffline.set(isOffline);
+    }
+
     // end region
 
     // region --- API CALLS ---
 
-
     private void getPlayers() {
         if (RequestUtil.hasInternetConnection(context)) {
+            setIsOffline(false);
             Call<FootballResponse> call = new RetrofitClient().getModel().getInfo();
             setRunning(true);
             call.enqueue(new Callback<FootballResponse>() {
                 @Override
                 public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
                     FootballResponse footballResponse = response.body();
-                    handleSuccess(response.body());
+                    setItemsList(footballResponse.getPlayerList());
                     setRunning(false);
                     setSwipeRefreshEnable(!running.get());
                     setNoDataAvailable(false);
@@ -162,15 +180,16 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         } else {
             showAlertDialog();
             setRunning(false);
+            setIsOffline(true);
+
+            setItemsList(db.getAllPlayers());
             if (itemsList.get().isEmpty()) {
                 setNoDataAvailable(true);
+            } else {
+                setIsDataSaved(true);
             }
         }
 
-    }
-
-    private void handleSuccess(FootballResponse body) {
-        setItemsList(body.getPlayerList());
     }
 
     // end region
@@ -184,7 +203,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             db.addPlayer(player);
         }
 
-        db.allPlayers();
+        db.getAllPlayers();
     }
 
     private void showAlertDialog() {
@@ -197,6 +216,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 .show();
     }
 
+
+    // region --- LISTENERS ---
     @Override
     public void onRefresh() {
         if (RequestUtil.hasInternetConnection(context)) {
@@ -208,4 +229,6 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             setRunning(false);
         }
     }
+
+    // end region
 }

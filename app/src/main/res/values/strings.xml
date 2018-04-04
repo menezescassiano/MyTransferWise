@@ -12,4 +12,5 @@
     <string name="warning_no_internet_connection_message">It was not possible to connect to the Internet.\nPlease check your connection.</string>
     <string name="try_again">Try again</string>
     <string name="warning_no_data_available">No data available</string>
+    <string name="warning_offline_data">Offline data</string>
 </resources>

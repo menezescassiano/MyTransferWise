@@ -111,7 +111,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         return i;
     }
 
-    public List<Player> allPlayers() {
+    public List<Player> getAllPlayers() {
 
         List<Player> players = new ArrayList<>();
         String query = "SELECT  * FROM " + TABLE_NAME;
@@ -124,6 +124,10 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
                 player = new Player();
                 player.setName(cursor.getString(1));
                 player.setPosition(cursor.getString(2));
+                player.setJerseyNumber(Integer.parseInt(cursor.getString(3)));
+                player.setDateOfBirth(cursor.getString(4));
+                player.setNationality(cursor.getString(5));
+                player.setContractUntil(cursor.getString(6));
                 players.add(player);
             } while (cursor.moveToNext());
         }
