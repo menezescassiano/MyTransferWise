@@ -110,9 +110,7 @@ public class BindAdapterUtil {
     @BindingAdapter("swipeRefresh_configuration")
     public static void configureSwipeRefresh(SwipeRefreshLayout swipeRefreshLayout, SwipeRefreshConfiguration swipeRefreshConfiguration) {
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshConfiguration.getOnRefreshListener());
-        swipeRefreshLayout.setColorSchemeColors(swipeRefreshConfiguration.getColorScheme());
         swipeRefreshLayout.setEnabled(swipeRefreshConfiguration.isEnable());
-        swipeRefreshLayout.setSize(swipeRefreshConfiguration.getSize());
     }
 
 }

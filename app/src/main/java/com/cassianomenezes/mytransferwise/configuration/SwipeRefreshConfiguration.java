@@ -8,30 +8,8 @@ import com.cassianomenezes.mytransferwise.BR;
 
 public class SwipeRefreshConfiguration  extends BaseObservable {
 
-    private int size = SwipeRefreshLayout.DEFAULT;
     private boolean enable = true;
-    private int[] colorScheme = {0, 0, 0, 0};
     private SwipeRefreshLayout.OnRefreshListener onRefreshListener;
-
-    @Bindable
-    public int getSize() {
-        return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-        notifyPropertyChanged(BR.size);
-    }
-
-    @Bindable
-    public int[] getColorScheme() {
-        return colorScheme;
-    }
-
-    public void setColorScheme(int... colorScheme) {
-        this.colorScheme = colorScheme;
-        notifyPropertyChanged(BR.colorScheme);
-    }
 
     @Bindable
     public boolean isEnable() {

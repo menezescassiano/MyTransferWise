@@ -52,14 +52,13 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
     public Player getPlayer(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.query(TABLE_NAME, // a. table
-                COLUMNS, // b. column names
-                " name = ?", // c. selections
-                new String[] { name }, // d. selections args
-                null, // e. group by
-                null, // f. having
-                null, // g. order by
-                null); // h. limit
+        Cursor cursor = db.query(TABLE_NAME, COLUMNS,
+                " name = ?",
+                new String[] { name },
+                null,
+                null,
+                null,
+                null);
 
         Player player = null;
 
@@ -86,8 +85,9 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_BIRTH_DATE, player.getDateOfBirth());
         values.put(KEY_NATIONALITY, player.getNationality());
         values.put(KEY_CONTRACT, player.getContractUntil());
-        // insert
+
         db.insert(TABLE_NAME,null, values);
+
         db.close();
     }
 
@@ -101,10 +101,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NATIONALITY, player.getNationality());
         values.put(KEY_CONTRACT, player.getContractUntil());
 
-        int i = db.update(TABLE_NAME, // table
-                values, // column/value
-                "id = ?", // selections
-                new String[] { player.getName() });
+        int i = db.update(TABLE_NAME, values, "id = ?", new String[] { player.getName() });
 
         db.close();
 
@@ -117,7 +114,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         String query = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Player player = null;
+        Player player;
 
         if (cursor.moveToFirst()) {
             do {
@@ -131,6 +128,8 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
                 players.add(player);
             } while (cursor.moveToNext());
         }
+
+        db.close();
 
         return players;
     }

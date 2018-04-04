@@ -32,8 +32,6 @@ import retrofit2.Response;
 
 public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.OnRefreshListener{
 
-    private static final String TAG = MainViewModel.class.getCanonicalName();
-
     private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
@@ -50,14 +48,18 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     public MainViewModel(Context context) {
         this.context = context;
+        setup();
+    }
+
+    private void setup() {
         setAdapter(new ItemsListAdapter(context, this, new ArrayList<>()));
         setupItemsList(new RecyclerConfiguration());
         db = new SQLiteDatabaseHandler(context);
-        getPlayers();
 
         swipeRefreshConfiguration = new SwipeRefreshConfiguration();
         swipeRefreshConfiguration.setOnRefreshListener(this);
 
+        getPlayers();
     }
 
     // --- region GETTERS & SETTERS ---
@@ -223,9 +225,9 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
         if (db.getPlayer(player.getName()) == null) {
             db.addPlayer(player);
+        } else {
+            db.updatePlayer(player);
         }
-
-        db.getAllPlayers();
     }
 
     private void showAlertDialog(String title, String message) {

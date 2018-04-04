@@ -11,6 +11,8 @@ import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.viewmodel.PlayerViewModel;
 
+import java.util.Objects;
+
 public class PlayerActivity extends AppCompatActivity {
 
     private ActivityPlayerBinding binding;
@@ -23,7 +25,7 @@ public class PlayerActivity extends AppCompatActivity {
         handleBundle();
         setupViewModel();
         setupBinding();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
