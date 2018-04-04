@@ -1,5 +1,6 @@
 package com.cassianomenezes.mytransferwise.viewmodel;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
@@ -162,12 +163,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             call.enqueue(new Callback<FootballResponse>() {
                 @Override
                 public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
-                    FootballResponse footballResponse = response.body();
-                    setItemsList(footballResponse.getPlayerList());
-                    setRunning(false);
-                    setSwipeRefreshEnable(!running.get());
-                    setNoDataAvailable(false);
-                    setIsSwipeToRefreshRunning(running.get());
+                    handleSuccess(response.body());
                 }
 
                 @Override
@@ -178,27 +174,40 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 }
             });
         } else {
-            showAlertDialog();
-            setRunning(false);
-            setIsOffline(true);
-
-            setItemsList(db.getAllPlayers());
-            if (itemsList.get().isEmpty()) {
-                setNoDataAvailable(true);
-            } else {
-                setIsDataSaved(true);
-            }
+            handleNoInternet();
         }
 
     }
 
     // end region
 
+    private void handleSuccess(FootballResponse footballResponse) {
+        setItemsList(footballResponse.getPlayerList());
+        setRunning(false);
+        setSwipeRefreshEnable(!running.get());
+        setNoDataAvailable(false);
+        setIsSwipeToRefreshRunning(running.get());
+    }
+
+    private void handleNoInternet() {
+        showAlertDialog();
+        setRunning(false);
+        setIsOffline(true);
+
+        setItemsList(db.getAllPlayers());
+        if (itemsList.get().isEmpty()) {
+            setNoDataAvailable(true);
+        } else {
+            setIsDataSaved(true);
+        }
+    }
+
     public void gotoPlayerActivity(int position) {
         Player player = itemsList.get().get(position);
         Intent intent = new Intent(context, PlayerActivity.class);
         intent.putExtra(Constants.BUNDLE_PLAYER_INFO, player);
         context.startActivity(intent);
+
         if (db.getPlayer(player.getName()) == null) {
             db.addPlayer(player);
         }

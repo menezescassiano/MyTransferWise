@@ -26,6 +26,12 @@ public class PlayerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
 
     private void handleBundle() {
         if (getIntent().getExtras() != null && getIntent().getExtras().size() > 0) {
