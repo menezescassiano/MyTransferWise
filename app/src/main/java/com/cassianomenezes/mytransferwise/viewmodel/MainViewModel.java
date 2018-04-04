@@ -61,7 +61,6 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // --- region GETTERS & SETTERS ---
 
-
     public ObservableField<List<Player>> getItemsList() {
         return itemsList;
     }
@@ -181,6 +180,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // end region
 
+    // region --- DATA HANDLING ---
+
     private void handleSuccess(FootballResponse footballResponse) {
         setItemsList(footballResponse.getPlayerList());
         setRunning(false);
@@ -201,6 +202,10 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             setIsDataSaved(true);
         }
     }
+
+    // end region
+
+    // region --- NAVIGATION ---
 
     public void gotoPlayerActivity(int position) {
         Player player = itemsList.get().get(position);
@@ -224,6 +229,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getPlayers())
                 .show();
     }
+
+    // end region
 
 
     // region --- LISTENERS ---

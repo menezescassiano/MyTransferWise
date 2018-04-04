@@ -25,6 +25,8 @@ public class PlayerViewModel {
         handlePlayerData();
     }
 
+    // --- region GETTERS & SETTERS ---
+
     public ObservableField<String> getName() {
         return name;
     }
@@ -73,6 +75,10 @@ public class PlayerViewModel {
         this.contractUntil.set(contractUntil);
     }
 
+    // end region
+
+    // --- region DATA HANDLING ---
+
     @SuppressLint("StringFormatMatches")
     private void handlePlayerData() {
         setName(String.format(context.getString(R.string.player_name), player.getName()));
@@ -82,4 +88,6 @@ public class PlayerViewModel {
         setNationality(String.format(context.getString(R.string.player_nationality), player.getNationality()));
         setContractUntil(String.format(context.getString(R.string.player_contract_date), player.getContractUntil()));
     }
+
+    // end region
 }
