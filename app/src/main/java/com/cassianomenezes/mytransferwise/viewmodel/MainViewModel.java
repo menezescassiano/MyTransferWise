@@ -1,6 +1,5 @@
 package com.cassianomenezes.mytransferwise.viewmodel;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.BaseObservable;
