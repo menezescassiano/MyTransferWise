@@ -1,30 +1,33 @@
 package com.cassianomenezes.mytransferwise;
 
 import com.cassianomenezes.mytransferwise.entries.Player;
-import com.cassianomenezes.mytransferwise.viewmodel.MainViewModel;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mock;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class PlayerUnitTest {
 
-    private List<Player> playerList = new ArrayList<>();
-    private Player player = new Player();
-
-    @Mock
-    private MainViewModel viewModel;
+    private Player player = mockPlayer();
 
     @Test
-    public void list_isCorrect() {
-        when(viewModel.getItemsList().get().get(0)).thenReturn(mock(Player.class));
-        Assert.assertNotNull(viewModel.getItemsList().get().get(0).getName());
+    public void playerIsNotNull() {
+        Assert.assertNotNull(player.getName());
+        Assert.assertNotNull(player.getPosition());
+        Assert.assertEquals(player.getJerseyNumber(), 4);
+        Assert.assertNotNull(player.getDateOfBirth());
+        Assert.assertNotNull(player.getNationality());
+        Assert.assertNotNull(player.getContractUntil());
+    }
+
+    private Player mockPlayer() {
+        Player player = new Player();
+        player.setName("Cassiano Menezes");
+        player.setPosition("Defender");
+        player.setJerseyNumber(4);
+        player.setDateOfBirth("1985-01-08");
+        player.setNationality("Brazil");
+        player.setContractUntil("00-00-00");
+
+        return player;
     }
 }
