@@ -47,7 +47,6 @@ public class RetrofitClient implements Interceptor {
         Request original = chain.request();
 
         Request request = original.newBuilder()
-                .header("X-Auth-Token", BuildConfig.API_KEY)
                 .method(original.method(), original.body())
                 .build();
 

@@ -17,8 +17,8 @@ import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 import com.cassianomenezes.mytransferwise.database.SQLiteDatabaseHandler;
+import com.cassianomenezes.mytransferwise.entries.Beer;
 import com.cassianomenezes.mytransferwise.entries.FootballResponse;
-import com.cassianomenezes.mytransferwise.entries.Player;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
 import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.util.RequestUtil;
@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.OnRefreshListener{
 
-    private ObservableField<List<Player>> itemsList = new ObservableField<>(new ArrayList<>());
+    private ObservableField<List<Beer>> beerItemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
     private ObservableBoolean noDataAvailable = new ObservableBoolean(false);
@@ -59,18 +59,27 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         swipeRefreshConfiguration = new SwipeRefreshConfiguration();
         swipeRefreshConfiguration.setOnRefreshListener(this);
 
-        getPlayers();
+        getBeers();
     }
 
     // --- region GETTERS & SETTERS ---
 
-    public ObservableField<List<Player>> getItemsList() {
+    /*public ObservableField<List<Player>> getItemsList() {
         return itemsList;
     }
 
     public void setItemsList(List<Player> itemsList) {
         this.itemsList.set(itemsList);
         adapter.setList(itemsList);
+    }*/
+
+    public ObservableField<List<Beer>> getBeerItemsList() {
+        return beerItemsList;
+    }
+
+    public void setBeerItemsList(List<Beer> beerItemsList) {
+        this.beerItemsList.set(beerItemsList);
+        adapter.setList(beerItemsList);
     }
 
     public ObservableField<String> getTitle() {
@@ -157,14 +166,15 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // region --- API CALLS ---
 
-    private void getPlayers() {
+    private void getBeers() {
         if (RequestUtil.hasInternetConnection(context)) {
             setIsOffline(false);
-            Call<FootballResponse> call = RetrofitClient.getInstance().getModel().getPlayersInfo();
             setRunning(true);
-            call.enqueue(new Callback<FootballResponse>() {
+            Call<List<Beer>> call = RetrofitClient.getInstance().getModel().getBeerInfo();
+            setRunning(true);
+            call.enqueue(new Callback<List<Beer>>() {
                 @Override
-                public void onResponse(Call<FootballResponse> call, Response<FootballResponse> response) {
+                public void onResponse(Call<List<Beer>> call, Response<List<Beer>> response) {
                     if(response.isSuccessful()) {
                         handleSuccess(response.body());
                     } else {
@@ -174,15 +184,13 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 }
 
                 @Override
-                public void onFailure(Call<FootballResponse> call, Throwable t) {
+                public void onFailure(Call<List<Beer>> call, Throwable t) {
                     showAlertDialog(context.getString(R.string.warning_data_fetch_error_title),
                             context.getString(R.string.warning_data_fetch_error_message));
                     setRunning(false);
                     setIsSwipeToRefreshRunning(running.get());
                 }
             });
-        } else {
-            handleNoInternet();
         }
 
     }
@@ -191,43 +199,43 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // region --- DATA HANDLING ---
 
-    private void handleSuccess(FootballResponse footballResponse) {
-        setItemsList(footballResponse.getPlayerList());
+    private void handleSuccess(List<Beer> beerList) {
+        setBeerItemsList(beerList);
         setRunning(false);
         setSwipeRefreshEnable(!running.get());
         setNoDataAvailable(false);
         setIsSwipeToRefreshRunning(running.get());
     }
 
-    private void handleNoInternet() {
+    /*private void handleNoInternet() {
         showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
                 context.getString(R.string.warning_no_internet_connection_message));
         setRunning(false);
         setIsOffline(true);
 
-        setItemsList(db.getAllPlayers());
-        if (itemsList.get().isEmpty()) {
+        setBeerItemsList(db.getAllPlayers());
+        if (beerItemsList.get().isEmpty()) {
             setNoDataAvailable(true);
         } else {
             setIsDataSaved(true);
         }
-    }
+    }*/
 
     // end region
 
     // region --- NAVIGATION ---
 
-    public void gotoPlayerActivity(int position) {
-        Player player = itemsList.get().get(position);
+    public void gotoBeerActivity(int position) {
+        Beer beer = beerItemsList.get().get(position);
         Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, player);
+        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, beer);
         context.startActivity(intent);
 
-        if (db.getPlayer(player.getName()) == null) {
+        /*if (db.getPlayer(player.getName()) == null) {
             db.addPlayer(player);
         } else {
             db.updatePlayer(player);
-        }
+        }*/
     }
 
     private void showAlertDialog(String title, String message) {
@@ -236,7 +244,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
-                .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getPlayers())
+                .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getBeers())
                 .show();
     }
 
@@ -248,7 +256,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     public void onRefresh() {
         if (RequestUtil.hasInternetConnection(context)) {
             setIsSwipeToRefreshRunning(true);
-            getPlayers();
+            getBeers();
         } else {
             showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
                     context.getString(R.string.warning_no_internet_connection_message));

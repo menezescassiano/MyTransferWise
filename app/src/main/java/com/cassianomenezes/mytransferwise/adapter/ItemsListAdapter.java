@@ -6,12 +6,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.custom.ItemsListHolder;
 import com.cassianomenezes.mytransferwise.databinding.ItemListBinding;
-import com.cassianomenezes.mytransferwise.entries.Player;
+import com.cassianomenezes.mytransferwise.entries.Beer;
 import com.cassianomenezes.mytransferwise.viewmodel.MainViewModel;
 
 import java.util.List;
@@ -20,9 +19,9 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
 
     private Context context;
     private MainViewModel viewModel;
-    private List<Player> itemsList;
+    private List<Beer> itemsList;
 
-    public ItemsListAdapter(Context context, MainViewModel viewModel, List<Player> itemsList){
+    public ItemsListAdapter(Context context, MainViewModel viewModel, List<Beer> itemsList){
         this.context = context;
         this.viewModel = viewModel;
         this.itemsList = itemsList;
@@ -40,7 +39,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemsListHolder holder, int position) {
         holder.getBinding().hItemListTvTitle.setText(itemsList.get(position).getName());
-        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> viewModel.gotoPlayerActivity(position));
+        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> viewModel.gotoBeerActivity(position));
 
     }
 
@@ -49,7 +48,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
         return itemsList.size();
     }
 
-    public void setList(List<Player> itemsList) {
+    public void setList(List<Beer> itemsList) {
         this.itemsList = itemsList;
         notifyDataSetChanged();
     }
