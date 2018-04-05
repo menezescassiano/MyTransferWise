@@ -1,12 +1,10 @@
 package com.cassianomenezes.mytransferwise.viewmodel;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.ObservableField;
 
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.entries.Beer;
-import com.cassianomenezes.mytransferwise.entries.Player;
 
 public class BeerViewModel {
 
@@ -73,13 +71,11 @@ public class BeerViewModel {
 
 
     private void handleBeerData() {
-        setName(String.format(context.getString(R.string.player_name), beer.getName()));
+        setName(String.format(context.getString(R.string.name), beer.getName()));
+        setTagline(String.format(context.getString(R.string.tag_line), beer.getTagline()));
+        setFirstBrewed(String.format(context.getString(R.string.first_brewed), beer.getFirstBrewed()));
+        setDescription(String.format(context.getString(R.string.description), beer.getDescription()));
         setImageUrl(beer.getImageUrl());
-        /*setPosition(String.format(context.getString(R.string.player_position), player.getPosition()));
-        setJerseyNumber(String.format(context.getString(R.string.player_jersey_number), player.getJerseyNumber()));
-        setDateOfBirth(String.format(context.getString(R.string.player_date_of_birth), player.getDateOfBirth()));
-        setNationality(String.format(context.getString(R.string.player_nationality), player.getNationality()));
-        setContractUntil(String.format(context.getString(R.string.player_contract_date), player.getContractUntil()));*/
     }
 
     // end region

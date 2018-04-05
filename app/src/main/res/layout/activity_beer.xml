@@ -16,50 +16,58 @@
             type="com.cassianomenezes.mytransferwise.viewmodel.BeerViewModel" />
     </data>
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:orientation="vertical">
-        <TextView
+        android:layout_height="wrap_content">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/sans_regular"
-            app:text="@{viewModel.name}"
-            app:font="@{R.font.sans_bold}"
-            tools:text="Manuel Neuer"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/sans_regular"
-            app:text="@{viewModel.tagline}"
-            app:font="@{R.font.sans_bold}"
-            tools:text="Keeper"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/sans_regular"
-            app:text="@{viewModel.firstBrewed}"
-            app:font="@{R.font.sans_bold}"
-            tools:text="1"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/sans_regular"
-            app:text="@{viewModel.description}"
-            app:font="@{R.font.sans_bold}"
-            tools:text="1986-03-27"/>
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center_horizontal"
-            app:srcUrl="@{viewModel.imageUrl}"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="20dp"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sans_regular"
+                app:text="@{viewModel.name}"
+                app:font="@{R.font.sans_bold}"
+                tools:text="Name: Beer Name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sans_regular"
+                app:text="@{viewModel.tagline}"
+                app:font="@{R.font.sans_bold}"
+                tools:text="Tagline: Tagline"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sans_regular"
+                app:text="@{viewModel.firstBrewed}"
+                app:font="@{R.font.sans_bold}"
+                tools:text="First Brewed: 12/2015"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sans_regular"
+                app:text="@{viewModel.description}"
+                app:font="@{R.font.sans_bold}"
+                tools:text="Lorem ipsum dolor sit amet"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:srcPlaceHolder="@{R.drawable.ic_beer}"
+                app:srcError="@{R.drawable.ic_beer}"
+                app:srcUrl="@{viewModel.imageUrl}"
+                tools:src="@drawable/ic_beer"/>
 
-    </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
 
 </layout>
