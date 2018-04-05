@@ -4,7 +4,9 @@ import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.Typeface;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.FontRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,12 +18,14 @@ import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 
-public class BindAdapterUtil {
+public class BindingAdapterUtil {
 
     /**
      * Set a textview with a customized text
@@ -111,6 +115,18 @@ public class BindAdapterUtil {
     public static void configureSwipeRefresh(SwipeRefreshLayout swipeRefreshLayout, SwipeRefreshConfiguration swipeRefreshConfiguration) {
         swipeRefreshLayout.setOnRefreshListener(swipeRefreshConfiguration.getOnRefreshListener());
         swipeRefreshLayout.setEnabled(swipeRefreshConfiguration.isEnable());
+    }
+
+    @BindingAdapter(value = {"srcUrl"/*, "srcPlaceHolder", "srcError"*/})
+    public static void setSrcUrlImage(ImageView view, String url/*, @DrawableRes int srcPlaceHolder, @DrawableRes int srcError*/) {
+        Glide.with(view.getContext())
+                .load(url)
+                .fitCenter()
+                .crossFade()
+                .skipMemoryCache(true)
+                /*.error(srcError)
+                .placeholder(srcPlaceHolder)*/
+                .into(view);
     }
 
 }
