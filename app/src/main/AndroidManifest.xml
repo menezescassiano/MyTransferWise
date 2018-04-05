@@ -23,7 +23,7 @@
         </activity>
         <activity
             android:name=".activity.BeerActivity"
-            android:label="@string/activity_player">
+            android:label="@string/activity_beer">
 
         </activity>
     </application>
