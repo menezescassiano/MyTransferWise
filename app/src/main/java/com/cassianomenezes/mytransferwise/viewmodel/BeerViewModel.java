@@ -74,6 +74,7 @@ public class BeerViewModel {
 
     private void handleBeerData() {
         setName(String.format(context.getString(R.string.player_name), beer.getName()));
+        setImageUrl(beer.getImageUrl());
         /*setPosition(String.format(context.getString(R.string.player_position), player.getPosition()));
         setJerseyNumber(String.format(context.getString(R.string.player_jersey_number), player.getJerseyNumber()));
         setDateOfBirth(String.format(context.getString(R.string.player_date_of_birth), player.getDateOfBirth()));
