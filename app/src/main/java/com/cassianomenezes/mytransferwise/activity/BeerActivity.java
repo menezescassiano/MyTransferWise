@@ -6,18 +6,18 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.cassianomenezes.mytransferwise.R;
-import com.cassianomenezes.mytransferwise.databinding.ActivityPlayerBinding;
-import com.cassianomenezes.mytransferwise.entries.Player;
+import com.cassianomenezes.mytransferwise.databinding.ActivityBeerBinding;
+import com.cassianomenezes.mytransferwise.entries.Beer;
 import com.cassianomenezes.mytransferwise.util.Constants;
-import com.cassianomenezes.mytransferwise.viewmodel.PlayerViewModel;
+import com.cassianomenezes.mytransferwise.viewmodel.BeerViewModel;
 
 import java.util.Objects;
 
-public class PlayerActivity extends AppCompatActivity {
+public class BeerActivity extends AppCompatActivity {
 
-    private ActivityPlayerBinding binding;
-    private PlayerViewModel viewModel;
-    private Player player;
+    private ActivityBeerBinding binding;
+    private BeerViewModel viewModel;
+    private Beer beer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +37,26 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void handleBundle() {
         if (getIntent().getExtras() != null && getIntent().getExtras().size() > 0) {
-            player = getIntent().getExtras().getParcelable(Constants.BUNDLE_PLAYER_INFO);
+            beer = getIntent().getExtras().getParcelable(Constants.BUNDLE_BEER_INFO);
         } else {
             finish();
         }
     }
 
     private void setupViewModel() {
-        viewModel = new PlayerViewModel(this, player);
+        viewModel = new BeerViewModel(this, beer);
     }
 
     private void setupBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_player);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_beer);
         binding.setViewModel(viewModel);
     }
 
-    public ActivityPlayerBinding getBinding() {
+    public ActivityBeerBinding getBinding() {
         return binding;
     }
 
-    public void setBinding(ActivityPlayerBinding binding) {
+    public void setBinding(ActivityBeerBinding binding) {
         this.binding = binding;
     }
 

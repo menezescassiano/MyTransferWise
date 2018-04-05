@@ -12,13 +12,12 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.cassianomenezes.mytransferwise.BR;
 import com.cassianomenezes.mytransferwise.R;
-import com.cassianomenezes.mytransferwise.activity.PlayerActivity;
+import com.cassianomenezes.mytransferwise.activity.BeerActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 import com.cassianomenezes.mytransferwise.database.SQLiteDatabaseHandler;
 import com.cassianomenezes.mytransferwise.entries.Beer;
-import com.cassianomenezes.mytransferwise.entries.FootballResponse;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
 import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.util.RequestUtil;
@@ -227,8 +226,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     public void gotoBeerActivity(int position) {
         Beer beer = beerItemsList.get().get(position);
-        Intent intent = new Intent(context, PlayerActivity.class);
-        intent.putExtra(Constants.BUNDLE_PLAYER_INFO, beer);
+        Intent intent = new Intent(context, BeerActivity.class);
+        intent.putExtra(Constants.BUNDLE_BEER_INFO, beer);
         context.startActivity(intent);
 
         /*if (db.getPlayer(player.getName()) == null) {
