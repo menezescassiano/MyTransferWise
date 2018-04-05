@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
 
@@ -117,15 +118,15 @@ public class BindingAdapterUtil {
         swipeRefreshLayout.setEnabled(swipeRefreshConfiguration.isEnable());
     }
 
-    @BindingAdapter(value = {"srcUrl"/*, "srcPlaceHolder", "srcError"*/})
-    public static void setSrcUrlImage(ImageView view, String url/*, @DrawableRes int srcPlaceHolder, @DrawableRes int srcError*/) {
+    @BindingAdapter(value = {"srcUrl", "srcPlaceHolder", "srcError"})
+    public static void setSrcUrlImage(ImageView view, String url, @DrawableRes int srcPlaceHolder, @DrawableRes int srcError) {
         Glide.with(view.getContext())
                 .load(url)
                 .fitCenter()
                 .crossFade()
                 .skipMemoryCache(true)
-                /*.error(srcError)
-                .placeholder(srcPlaceHolder)*/
+                .error(srcError)
+                .placeholder(srcPlaceHolder)
                 .into(view);
     }
 

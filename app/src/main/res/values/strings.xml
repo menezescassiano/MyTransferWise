@@ -1,12 +1,10 @@
 <resources>
     <string name="app_name">My TransferWise</string>
     <string name="activity_player">Player Details</string>
-    <string name="player_name">#Name:# %s</string>
-    <string name="player_position">#Position:# %s</string>
-    <string name="player_jersey_number">#Number:# %s</string>
-    <string name="player_date_of_birth">#Date of Birth:# %s</string>
-    <string name="player_nationality">#Nationality:# %s</string>
-    <string name="player_contract_date">#Contract date:# %s</string>
+    <string name="name">#Name:# %s</string>
+    <string name="tag_line">#Tagline:# %s</string>
+    <string name="first_brewed">#First Brewed:# %s</string>
+    <string name="description">#Description:# %s</string>
 
     <string name="warning_no_internet_connection_title">No internet connection</string>
     <string name="warning_no_internet_connection_message">It was not possible to connect to the Internet.\nPlease check your connection.</string>
