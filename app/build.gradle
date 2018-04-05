@@ -18,7 +18,7 @@ android {
 
         debug {
             debuggable true
-            buildConfigField "String", "SERVER_URL", '"http://api.football-data.org/v1/"'
+            buildConfigField "String", "SERVER_URL", '"http://api.football-data.org/"'
             buildConfigField "String", "API_KEY", '"287ebf8fedba450c8ab16f6b29f9797a"'
         }
     }

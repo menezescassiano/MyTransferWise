@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 
 public interface RetrofitModel {
 
-    @GET("teams/5/players")
+    @GET("v1/teams/5/players")
     Call<FootballResponse> getPlayersInfo();
 
 }
