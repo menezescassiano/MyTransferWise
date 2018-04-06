@@ -64,6 +64,7 @@
                 app:srcPlaceHolder="@{R.drawable.ic_beer}"
                 app:srcError="@{R.drawable.ic_beer}"
                 app:srcUrl="@{viewModel.imageUrl}"
+                android:layout_marginBottom="50dp"
                 tools:src="@drawable/ic_beer"/>
 
         </LinearLayout>

@@ -122,6 +122,7 @@ public class BindingAdapterUtil {
     public static void setSrcUrlImage(ImageView view, String url, @DrawableRes int srcPlaceHolder, @DrawableRes int srcError) {
         Glide.with(view.getContext())
                 .load(url)
+                .override(800, 1000)
                 .fitCenter()
                 .crossFade()
                 .skipMemoryCache(true)
