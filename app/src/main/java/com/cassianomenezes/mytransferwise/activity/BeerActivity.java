@@ -1,9 +1,11 @@
 package com.cassianomenezes.mytransferwise.activity;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.databinding.ActivityBeerBinding;
@@ -35,10 +37,12 @@ public class BeerActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("ShowToast")
     private void handleBundle() {
         if (getIntent().getExtras() != null && getIntent().getExtras().size() > 0) {
             beer = getIntent().getExtras().getParcelable(Constants.BUNDLE_BEER_INFO);
         } else {
+            Toast.makeText(this, getString(R.string.warning_internal_error), Toast.LENGTH_SHORT);
             finish();
         }
     }

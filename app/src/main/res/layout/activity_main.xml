@@ -28,7 +28,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.isOffline &amp;&amp; viewModel.isDataSaved ? View.VISIBLE : View.GONE}"
+                android:visibility="@{viewModel.isOffline &amp;&amp; !viewModel.noDataAvailable ? View.VISIBLE : View.GONE}"
                 android:text="@string/warning_offline_data"/>
             <TextView
                 android:layout_width="match_parent"
