@@ -25,6 +25,10 @@ public class Beer implements Parcelable {
     @SerializedName("image_url")
     private String imageUrl;
 
+    public Beer() {
+
+    }
+
     protected Beer(Parcel in) {
         id = in.readInt();
         name = in.readString();

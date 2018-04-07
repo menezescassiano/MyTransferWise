@@ -6,6 +6,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.cassianomenezes.mytransferwise.BR;
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.activity.BeerActivity;
+import com.cassianomenezes.mytransferwise.activity.MainActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
@@ -190,6 +192,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                     setIsSwipeToRefreshRunning(running.get());
                 }
             });
+        } else {
+            handleNoInternet();
         }
 
     }
@@ -206,19 +210,19 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         setIsSwipeToRefreshRunning(running.get());
     }
 
-    /*private void handleNoInternet() {
+    private void handleNoInternet() {
         showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
                 context.getString(R.string.warning_no_internet_connection_message));
         setRunning(false);
         setIsOffline(true);
 
-        setBeerItemsList(db.getAllPlayers());
+        setBeerItemsList(db.getAllBeers());
         if (beerItemsList.get().isEmpty()) {
             setNoDataAvailable(true);
         } else {
             setIsDataSaved(true);
         }
-    }*/
+    }
 
     // end region
 
@@ -230,11 +234,11 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         intent.putExtra(Constants.BUNDLE_BEER_INFO, beer);
         context.startActivity(intent);
 
-        /*if (db.getPlayer(player.getName()) == null) {
-            db.addPlayer(player);
+        if (db.getBeer(beer.getName()) == null) {
+            db.addBeer(beer);
         } else {
-            db.updatePlayer(player);
-        }*/
+            db.updateBeer(beer);
+        }
     }
 
     private void showAlertDialog(String title, String message) {
@@ -242,7 +246,11 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         builder = new AlertDialog.Builder(context);
         builder.setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss())
+                .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                    setSwipeRefreshEnable(true);
+                    dialog.dismiss();
+                    ((MainActivity)context).getBinding().invalidateAll();
+                })
                 .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getBeers())
                 .show();
     }
@@ -260,8 +268,10 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
             showAlertDialog(context.getString(R.string.warning_no_internet_connection_title),
                     context.getString(R.string.warning_no_internet_connection_message));
             setIsSwipeToRefreshRunning(false);
+            setSwipeRefreshEnable(false);
             setRunning(false);
         }
+
     }
 
     // end region
