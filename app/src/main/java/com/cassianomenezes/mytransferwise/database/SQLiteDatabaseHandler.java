@@ -6,25 +6,23 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.cassianomenezes.mytransferwise.entries.Beer;
 import com.cassianomenezes.mytransferwise.entries.Player;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "players_db";
-    private static final String TABLE_NAME = "players";
+    private static final String TABLE_NAME = "beers";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_POSITION = "position";
-    private static final String KEY_JERSEY_NUMBER = "jersey_number";
-    private static final String KEY_BIRTH_DATE = "birth_date";
-    private static final String KEY_NATIONALITY = "nationality";
-    private static final String KEY_CONTRACT = "contract";
-    private static final String[] COLUMNS = { KEY_ID, KEY_NAME, KEY_POSITION, KEY_JERSEY_NUMBER, KEY_BIRTH_DATE, KEY_NATIONALITY, KEY_CONTRACT };
+    private static final String KEY_TAGLINE = "tagline";
+    private static final String KEY_FIRST_BREWED = "jersey_number";
+    private static final String KEY_DESCRIPTION = "birth_date";
+    private static final String[] COLUMNS = { KEY_ID, KEY_NAME, KEY_TAGLINE, KEY_FIRST_BREWED, KEY_DESCRIPTION};
 
     public SQLiteDatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -33,13 +31,11 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATION_TABLE = "CREATE TABLE " + TABLE_NAME + "( "
-                + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + "name TEXT, "
-                + "position TEXT, "
-                + "jersey_number TEXT,"
-                + "birth_date TEXT,"
-                + "nationality TEXT,"
-                + "contract TEXT)";
+                + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_NAME + " TEXT, "
+                + KEY_TAGLINE + " TEXT, "
+                + KEY_FIRST_BREWED + " TEXT,"
+                + KEY_DESCRIPTION + " TEXT)";
 
         db.execSQL(CREATION_TABLE);
     }
@@ -50,7 +46,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public Player getPlayer(String name) {
+    public Beer getBeer(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS,
                 " name = ?",
@@ -60,77 +56,70 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
                 null,
                 null);
 
-        Player player = null;
+        Beer beer = null;
 
         if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
-            player = new Player();
-            player.setName(cursor.getString(1));
-            player.setPosition(cursor.getString(2));
-            player.setJerseyNumber(Integer.parseInt(cursor.getString(3)));
-            player.setDateOfBirth(cursor.getString(4));
-            player.setNationality(cursor.getString(5));
-            player.setContractUntil(cursor.getString(6));
+            beer = new Beer();
+            beer.setName(cursor.getString(1));
+            beer.setTagline(cursor.getString(2));
+            beer.setFirstBrewed(cursor.getString(3));
+            beer.setDescription(cursor.getString(4));
         }
 
-        return player;
+        return beer;
     }
 
-    public void addPlayer(Player player) {
+    public void addBeer(Beer beer) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, player.getName());
-        values.put(KEY_POSITION, player.getPosition());
-        values.put(KEY_JERSEY_NUMBER, player.getJerseyNumber());
-        values.put(KEY_BIRTH_DATE, player.getDateOfBirth());
-        values.put(KEY_NATIONALITY, player.getNationality());
-        values.put(KEY_CONTRACT, player.getContractUntil());
+        values.put(KEY_NAME, beer.getName());
+        values.put(KEY_TAGLINE, beer.getTagline());
+        values.put(KEY_FIRST_BREWED, beer.getFirstBrewed());
+        values.put(KEY_DESCRIPTION, beer.getDescription());
 
         db.insert(TABLE_NAME,null, values);
 
         db.close();
     }
 
-    public int updatePlayer(Player player) {
+    public int updateBeer(Beer beer) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, player.getName());
-        values.put(KEY_POSITION, player.getPosition());
-        values.put(KEY_JERSEY_NUMBER, player.getJerseyNumber());
-        values.put(KEY_BIRTH_DATE, player.getDateOfBirth());
-        values.put(KEY_NATIONALITY, player.getNationality());
-        values.put(KEY_CONTRACT, player.getContractUntil());
+        values.put(KEY_NAME, beer.getName());
+        values.put(KEY_TAGLINE, beer.getTagline());
+        values.put(KEY_FIRST_BREWED, beer.getFirstBrewed());
+        values.put(KEY_DESCRIPTION, beer.getDescription());
 
-        int i = db.update(TABLE_NAME, values, "id = ?", new String[] { player.getName() });
+        int i = db.update(TABLE_NAME, values, "id = ?", new String[] { beer.getName() });
 
         db.close();
 
         return i;
     }
 
-    public List<Player> getAllPlayers() {
+    public List<Beer> getAllBeers() {
 
-        List<Player> players = new ArrayList<>();
+        List<Beer> beers = new ArrayList<>();
         String query = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Player player;
+        Beer beer;
 
         if (cursor.moveToFirst()) {
             do {
-                player = new Player();
-                player.setName(cursor.getString(1));
-                player.setPosition(cursor.getString(2));
-                player.setJerseyNumber(Integer.parseInt(cursor.getString(3)));
-                player.setDateOfBirth(cursor.getString(4));
-                player.setNationality(cursor.getString(5));
-                player.setContractUntil(cursor.getString(6));
-                players.add(player);
+                beer = new Beer();
+                beer.setName(cursor.getString(1));
+                beer.setTagline(cursor.getString(2));
+                beer.setFirstBrewed(cursor.getString(3));
+                beer.setDescription(cursor.getString(4));
+
+                beers.add(beer);
             } while (cursor.moveToNext());
         }
 
         db.close();
 
-        return players;
+        return beers;
     }
 }
