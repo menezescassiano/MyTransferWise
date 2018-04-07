@@ -39,8 +39,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
     @Override
     public void onBindViewHolder(@NonNull ItemsListHolder holder, int position) {
         holder.getBinding().hItemListTvTitle.setText(itemsList.get(position).getName());
-        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> viewModel.gotoBeerActivity(position));
-
+        holder.getBinding().hItemListLlTitle.setOnClickListener(v -> viewModel.goToBeerActivity(position));
     }
 
     @Override

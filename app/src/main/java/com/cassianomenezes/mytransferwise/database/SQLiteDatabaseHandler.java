@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.cassianomenezes.mytransferwise.entries.Beer;
-import com.cassianomenezes.mytransferwise.entries.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "players_db";
+    private static final String DATABASE_NAME = "beers_db";
     private static final String TABLE_NAME = "beers";
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
