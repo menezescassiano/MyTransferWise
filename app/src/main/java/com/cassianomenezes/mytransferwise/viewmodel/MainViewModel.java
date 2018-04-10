@@ -231,7 +231,6 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 .setPositiveButton(android.R.string.ok, (dialog, which) -> {
                     setSwipeRefreshEnable(true);
                     dialog.dismiss();
-                    //needed to do this in order to refresh layout
                     ((MainActivity)context).getBinding().invalidateAll();
                 })
                 .setNeutralButton(context.getString(R.string.try_again), (dialog, which) -> getBeers())
