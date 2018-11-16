@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.databinding.ActivityBeerBinding;
-import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.viewmodel.BeerViewModel;
 
@@ -19,7 +19,7 @@ public class BeerActivity extends AppCompatActivity {
 
     private ActivityBeerBinding binding;
     private BeerViewModel viewModel;
-    private Beer beer;
+    private BeerResponse beerResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class BeerActivity extends AppCompatActivity {
     @SuppressLint("ShowToast")
     private void handleBundle() {
         if (getIntent().getExtras() != null && getIntent().getExtras().size() > 0) {
-            beer = getIntent().getExtras().getParcelable(Constants.BUNDLE_BEER_INFO);
+            beerResponse = getIntent().getExtras().getParcelable(Constants.BUNDLE_BEER_INFO);
         } else {
             Toast.makeText(this, getString(R.string.warning_internal_error), Toast.LENGTH_SHORT);
             finish();
@@ -48,7 +48,7 @@ public class BeerActivity extends AppCompatActivity {
     }
 
     private void setupViewModel() {
-        viewModel = new BeerViewModel(this, beer);
+        viewModel = new BeerViewModel(this, beerResponse);
     }
 
     private void setupBinding() {

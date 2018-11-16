@@ -18,8 +18,9 @@ import com.cassianomenezes.mytransferwise.activity.MainActivity;
 import com.cassianomenezes.mytransferwise.adapter.ItemsListAdapter;
 import com.cassianomenezes.mytransferwise.configuration.RecyclerConfiguration;
 import com.cassianomenezes.mytransferwise.configuration.SwipeRefreshConfiguration;
-import com.cassianomenezes.mytransferwise.database.SQLiteDatabaseHandler;
+import com.cassianomenezes.mytransferwise.database.DatabaseHelper;
 import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 import com.cassianomenezes.mytransferwise.network.RetrofitClient;
 import com.cassianomenezes.mytransferwise.util.Constants;
 import com.cassianomenezes.mytransferwise.util.RequestUtil;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 
 public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.OnRefreshListener{
 
-    private ObservableField<List<Beer>> beerItemsList = new ObservableField<>(new ArrayList<>());
+    private ObservableField<List<BeerResponse>> beerItemsList = new ObservableField<>(new ArrayList<>());
     private ObservableBoolean running = new ObservableBoolean(false);
     private ObservableField<String> title = new ObservableField<>("");
     private ObservableBoolean noDataAvailable = new ObservableBoolean(false);
@@ -44,7 +45,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     private Context context;
     private RecyclerConfiguration recyclerConfiguration;
     private SwipeRefreshConfiguration swipeRefreshConfiguration;
-    private SQLiteDatabaseHandler db;
+    private DatabaseHelper databaseHelper;
 
     public MainViewModel(Context context) {
         this.context = context;
@@ -54,7 +55,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     private void setup() {
         setAdapter(new ItemsListAdapter(context, this, new ArrayList<>()));
         setupItemsList(new RecyclerConfiguration());
-        db = new SQLiteDatabaseHandler(context);
+
+        databaseHelper = new DatabaseHelper(context);
 
         swipeRefreshConfiguration = new SwipeRefreshConfiguration();
         swipeRefreshConfiguration.setOnRefreshListener(this);
@@ -64,13 +66,13 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // --- region GETTERS & SETTERS ---
 
-    public ObservableField<List<Beer>> getBeerItemsList() {
+    public ObservableField<List<BeerResponse>> getBeerItemsList() {
         return beerItemsList;
     }
 
-    public void setBeerItemsList(List<Beer> beerItemsList) {
-        this.beerItemsList.set(beerItemsList);
-        adapter.setList(beerItemsList);
+    public void setBeerItemsList(List<BeerResponse> beerResponseItemsList) {
+        this.beerItemsList.set(beerResponseItemsList);
+        adapter.setList(beerResponseItemsList);
     }
 
     public ObservableField<String> getTitle() {
@@ -153,10 +155,10 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         if (RequestUtil.hasInternetConnection(context)) {
             setIsOffline(false);
             setRunning(true);
-            Call<List<Beer>> call = RetrofitClient.getInstance().getModel().getBeerInfo();
-            call.enqueue(new Callback<List<Beer>>() {
+            Call<List<BeerResponse>> call = RetrofitClient.getInstance().getModel().getBeerInfo();
+            call.enqueue(new Callback<List<BeerResponse>>() {
                 @Override
-                public void onResponse(@NonNull Call<List<Beer>> call, @NonNull Response<List<Beer>> response) {
+                public void onResponse(@NonNull Call<List<BeerResponse>> call, @NonNull Response<List<BeerResponse>> response) {
                     if(response.isSuccessful()) {
                         setRunning(false);
                         handleSuccess(response.body());
@@ -167,7 +169,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<Beer>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<List<BeerResponse>> call, @NonNull Throwable t) {
                     setRunning(false);
                     showAlertDialog(context.getString(R.string.warning_data_fetch_error_title),
                             context.getString(R.string.warning_data_fetch_error_message));
@@ -184,8 +186,8 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
 
     // region --- DATA HANDLING ---
 
-    private void handleSuccess(List<Beer> beerList) {
-        setBeerItemsList(beerList);
+    private void handleSuccess(List<BeerResponse> beerResponseList) {
+        setBeerItemsList(beerResponseList);
         setSwipeRefreshEnable(!running.get());
         setNoDataAvailable(false);
         setIsSwipeToRefreshRunning(running.get());
@@ -197,7 +199,7 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
         setRunning(false);
         setIsOffline(true);
 
-        setBeerItemsList(db.getAllBeers());
+        setBeerItemsList(databaseHelper.getDatabase().getAllBeers());
         if (beerItemsList.get().isEmpty()) {
             setNoDataAvailable(true);
         } else {
@@ -210,16 +212,16 @@ public class MainViewModel extends BaseObservable implements SwipeRefreshLayout.
     // region --- NAVIGATION ---
 
     public void goToBeerActivity(int position) {
-        Beer beer = beerItemsList.get().get(position);
+        BeerResponse beerResponse = beerItemsList.get().get(position);
         Intent intent = new Intent(context, BeerActivity.class);
-        intent.putExtra(Constants.BUNDLE_BEER_INFO, beer);
+        intent.putExtra(Constants.BUNDLE_BEER_INFO, beerResponse);
         context.startActivity(intent);
 
-        //When the user selects a beer, it will automatically be added/updated into the database
-        if (db.getBeer(beer.getName()) == null) {
-            db.addBeer(beer);
+        //When the user selects a beerResponse, it will automatically be added/updated into the database
+        if (databaseHelper.getDatabase().getBeer(beerResponse.getName()) == null) {
+            databaseHelper.getDatabase().addBeer(beerResponse);
         } else {
-            db.updateBeer(beer);
+            databaseHelper.getDatabase().updateBeer(beerResponse);
         }
     }
 

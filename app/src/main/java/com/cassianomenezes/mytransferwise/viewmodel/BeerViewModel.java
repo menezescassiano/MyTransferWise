@@ -4,7 +4,7 @@ import android.content.Context;
 import android.databinding.ObservableField;
 
 import com.cassianomenezes.mytransferwise.R;
-import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 
 public class BeerViewModel {
 
@@ -15,11 +15,11 @@ public class BeerViewModel {
     private ObservableField<String> imageUrl = new ObservableField<>();
 
     private Context context;
-    private Beer beer;
+    private BeerResponse beerResponse;
 
-    public BeerViewModel(Context context, Beer beer) {
+    public BeerViewModel(Context context, BeerResponse beerResponse) {
         this.context = context;
-        this.beer = beer;
+        this.beerResponse = beerResponse;
         handleBeerData();
     }
 
@@ -71,11 +71,11 @@ public class BeerViewModel {
 
 
     private void handleBeerData() {
-        setName(String.format(context.getString(R.string.name), beer.getName()));
-        setTagline(String.format(context.getString(R.string.tag_line), beer.getTagline()));
-        setFirstBrewed(String.format(context.getString(R.string.first_brewed), beer.getFirstBrewed()));
-        setDescription(String.format(context.getString(R.string.description), beer.getDescription()));
-        setImageUrl(beer.getImageUrl());
+        setName(String.format(context.getString(R.string.name), beerResponse.getName()));
+        setTagline(String.format(context.getString(R.string.tag_line), beerResponse.getTagline()));
+        setFirstBrewed(String.format(context.getString(R.string.first_brewed), beerResponse.getFirstBrewed()));
+        setDescription(String.format(context.getString(R.string.description), beerResponse.getDescription()));
+        setImageUrl(beerResponse.getImageUrl());
     }
 
     // end region

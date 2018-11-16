@@ -18,8 +18,10 @@ public class RetrofitClient implements Interceptor {
     private static RetrofitClient instance;
 
     public static RetrofitClient getInstance() {
-        if (instance == null)
+        if (instance == null) {
             instance = new RetrofitClient();
+        }
+
 
         return instance;
     }

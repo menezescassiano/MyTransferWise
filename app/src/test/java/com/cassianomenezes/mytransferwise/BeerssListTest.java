@@ -1,6 +1,6 @@
 package com.cassianomenezes.mytransferwise;
 
-import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,32 +11,32 @@ import java.util.List;
 
 public class BeerssListTest {
 
-    private List<Beer> beerList = new ArrayList<>();
+    private List<BeerResponse> beerResponseList = new ArrayList<>();
 
     @Before
     public void startTest() {
-        beerList.add(mockBeer());
+        beerResponseList.add(mockBeer());
     }
 
     @Test
     public void listIsNotNullOrEmpty() {
-        Assert.assertNotNull(beerList);
-        Assert.assertTrue(!beerList.isEmpty());
-        Beer beer = beerList.get(0);
-        Assert.assertNotNull(beer.getName());
-        Assert.assertNotNull(beer.getDescription());
-        Assert.assertNotNull(beer.getFirstBrewed());
-        Assert.assertNotNull(beer.getTagline());
+        Assert.assertNotNull(beerResponseList);
+        Assert.assertTrue(!beerResponseList.isEmpty());
+        BeerResponse beerResponse = beerResponseList.get(0);
+        Assert.assertNotNull(beerResponse.getName());
+        Assert.assertNotNull(beerResponse.getDescription());
+        Assert.assertNotNull(beerResponse.getFirstBrewed());
+        Assert.assertNotNull(beerResponse.getTagline());
 
     }
 
-    private Beer mockBeer() {
-        Beer beer = new Beer();
-        beer.setName("Heineken");
-        beer.setDescription("Best beer");
-        beer.setFirstBrewed("10/1900");
-        beer.setTagline("My tagline");
+    private BeerResponse mockBeer() {
+        BeerResponse beerResponse = new BeerResponse();
+        beerResponse.setName("Heineken");
+        beerResponse.setDescription("Best beerResponse");
+        beerResponse.setFirstBrewed("10/1900");
+        beerResponse.setTagline("My tagline");
 
-        return beer;
+        return beerResponse;
     }
 }

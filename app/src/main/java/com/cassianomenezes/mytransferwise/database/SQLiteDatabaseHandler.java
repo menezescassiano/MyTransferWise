@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    public Beer getBeer(String name) {
+    public BeerResponse getBeer(String name) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME, COLUMNS,
                 " name = ?",
@@ -55,70 +55,70 @@ public class SQLiteDatabaseHandler extends SQLiteOpenHelper {
                 null,
                 null);
 
-        Beer beer = null;
+        BeerResponse beerResponse = null;
 
         if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
-            beer = new Beer();
-            beer.setName(cursor.getString(1));
-            beer.setTagline(cursor.getString(2));
-            beer.setFirstBrewed(cursor.getString(3));
-            beer.setDescription(cursor.getString(4));
+            beerResponse = new BeerResponse();
+            beerResponse.setName(cursor.getString(1));
+            beerResponse.setTagline(cursor.getString(2));
+            beerResponse.setFirstBrewed(cursor.getString(3));
+            beerResponse.setDescription(cursor.getString(4));
         }
 
-        return beer;
+        return beerResponse;
     }
 
-    public void addBeer(Beer beer) {
+    public void addBeer(BeerResponse beerResponse) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, beer.getName());
-        values.put(KEY_TAGLINE, beer.getTagline());
-        values.put(KEY_FIRST_BREWED, beer.getFirstBrewed());
-        values.put(KEY_DESCRIPTION, beer.getDescription());
+        values.put(KEY_NAME, beerResponse.getName());
+        values.put(KEY_TAGLINE, beerResponse.getTagline());
+        values.put(KEY_FIRST_BREWED, beerResponse.getFirstBrewed());
+        values.put(KEY_DESCRIPTION, beerResponse.getDescription());
 
         db.insert(TABLE_NAME,null, values);
 
         db.close();
     }
 
-    public int updateBeer(Beer beer) {
+    public int updateBeer(BeerResponse beerResponse) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, beer.getName());
-        values.put(KEY_TAGLINE, beer.getTagline());
-        values.put(KEY_FIRST_BREWED, beer.getFirstBrewed());
-        values.put(KEY_DESCRIPTION, beer.getDescription());
+        values.put(KEY_NAME, beerResponse.getName());
+        values.put(KEY_TAGLINE, beerResponse.getTagline());
+        values.put(KEY_FIRST_BREWED, beerResponse.getFirstBrewed());
+        values.put(KEY_DESCRIPTION, beerResponse.getDescription());
 
-        int i = db.update(TABLE_NAME, values, "id = ?", new String[] { beer.getName() });
+        int i = db.update(TABLE_NAME, values, "id = ?", new String[] { beerResponse.getName() });
 
         db.close();
 
         return i;
     }
 
-    public List<Beer> getAllBeers() {
+    public List<BeerResponse> getAllBeers() {
 
-        List<Beer> beers = new ArrayList<>();
+        List<BeerResponse> beerResponses = new ArrayList<>();
         String query = "SELECT  * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Beer beer;
+        BeerResponse beerResponse;
 
         if (cursor.moveToFirst()) {
             do {
-                beer = new Beer();
-                beer.setName(cursor.getString(1));
-                beer.setTagline(cursor.getString(2));
-                beer.setFirstBrewed(cursor.getString(3));
-                beer.setDescription(cursor.getString(4));
+                beerResponse = new BeerResponse();
+                beerResponse.setName(cursor.getString(1));
+                beerResponse.setTagline(cursor.getString(2));
+                beerResponse.setFirstBrewed(cursor.getString(3));
+                beerResponse.setDescription(cursor.getString(4));
 
-                beers.add(beer);
+                beerResponses.add(beerResponse);
             } while (cursor.moveToNext());
         }
 
         db.close();
 
-        return beers;
+        return beerResponses;
     }
 }

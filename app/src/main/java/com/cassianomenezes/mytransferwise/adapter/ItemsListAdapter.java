@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.cassianomenezes.mytransferwise.R;
 import com.cassianomenezes.mytransferwise.custom.ItemsListHolder;
 import com.cassianomenezes.mytransferwise.databinding.ItemListBinding;
-import com.cassianomenezes.mytransferwise.entries.Beer;
+import com.cassianomenezes.mytransferwise.entries.BeerResponse;
 import com.cassianomenezes.mytransferwise.viewmodel.MainViewModel;
 
 import java.util.List;
@@ -19,9 +19,9 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
 
     private Context context;
     private MainViewModel viewModel;
-    private List<Beer> itemsList;
+    private List<BeerResponse> itemsList;
 
-    public ItemsListAdapter(Context context, MainViewModel viewModel, List<Beer> itemsList){
+    public ItemsListAdapter(Context context, MainViewModel viewModel, List<BeerResponse> itemsList){
         this.context = context;
         this.viewModel = viewModel;
         this.itemsList = itemsList;
@@ -47,7 +47,7 @@ public class ItemsListAdapter extends RecyclerView.Adapter<ItemsListHolder> {
         return itemsList.size();
     }
 
-    public void setList(List<Beer> itemsList) {
+    public void setList(List<BeerResponse> itemsList) {
         this.itemsList = itemsList;
         notifyDataSetChanged();
     }
